@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET'])
 def index():
-    print('I am in index')
+    print('I am in indexx')
     return {"name": "Hello World!"}
 
 
