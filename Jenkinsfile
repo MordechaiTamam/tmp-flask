@@ -1,15 +1,25 @@
 pipeline {
-    agent any
+    agent { label 'agent_1' }
 
     stages {
-        stage('Hello') {
-            steps {
-                echo 'Hello World'
+        stage('Docker build'){
+            steps{
+                sh 'ls -l'
+                sh 'docker build -t hello-flask-160122 .'
             }
         }
-        stage('list files') {
+        stage('API call') {
+            agent {
+                docker {
+                    image 'hello-flask-160122'
+                    reuseNode true
+                }
+            }
             steps {
-                sh 'ls'
+                // sleep 20
+                sh 'python /app/flask_app.py &'
+                sleep 5
+                sh 'curl 127.0.0.1:80'
             }
         }
     }
